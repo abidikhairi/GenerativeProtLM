@@ -1,3 +1,4 @@
+"""Module providing a Command Line Parser."""
 import argparse
 
 
