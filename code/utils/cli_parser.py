@@ -10,6 +10,6 @@ def get_default_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser()
 
-    # TODO: add arguments
+    # The command line args should be added here
 
     return parser
