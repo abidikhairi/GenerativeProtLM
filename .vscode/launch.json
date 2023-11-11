@@ -21,6 +21,19 @@
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "justMyCode": true
+        },
+        {
+            "name": "Train Protein Tokenizer",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/code/scripts/train_tokenizer.py",
+            "args": [
+                "--save-path",
+                "${workspaceFolder}/models/tokenizer"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
         }
     ]
 }
