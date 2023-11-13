@@ -21,21 +21,21 @@ def main(save_path: str):
         --save-path (str): The path where the trained tokenizer will be saved.
     """
     tokenizer = Tokenizer(models.Unigram())
-    special_tokens = ['<sos>', '<eos>', '<pad>']
+    special_tokens = ['<bos>', '<eos>', '<pad>']
 
     tokenizer.add_special_tokens(special_tokens)
     tokenizer.add_tokens(list("ACDEFGHIKLMNPQRSTVWY"))
 
-    sos_token_id = tokenizer.token_to_id('<sos>')
+    sos_token_id = tokenizer.token_to_id('<bos>')
     eos_token_id = tokenizer.token_to_id('<eos>')
 
     tokenizer.post_processor = processors.TemplateProcessing(
-        single="<sos>:0 $A:0 <eos>:0",
-        special_tokens=[('<sos>', sos_token_id), ('<eos>', eos_token_id)]
+        single="<bos>:0 $A:0 <eos>:0",
+        special_tokens=[('<bos>', sos_token_id), ('<eos>', eos_token_id)]
     )
 
     trained_tokenizer = PreTrainedTokenizerFast(
-        tokenizer_object=tokenizer, sos_token="<sos>", eos_token="<eos>", pad_token="<pad>")
+        tokenizer_object=tokenizer, bos_token="<bos>", eos_token="<eos>", pad_token="<pad>")
 
     trained_tokenizer.save_pretrained(save_path)
 

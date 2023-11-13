@@ -1,7 +1,7 @@
 {
   "added_tokens_decoder": {
     "1": {
-      "content": "<sos>",
+      "content": "<bos>",
       "lstrip": false,
       "normalized": false,
       "rstrip": false,
@@ -186,10 +186,10 @@
     }
   },
   "additional_special_tokens": [],
+  "bos_token": "<bos>",
   "clean_up_tokenization_spaces": true,
   "eos_token": "<eos>",
   "model_max_length": 1000000000000000019884624838656,
   "pad_token": "<pad>",
-  "sos_token": "<sos>",
   "tokenizer_class": "PreTrainedTokenizerFast"
 }

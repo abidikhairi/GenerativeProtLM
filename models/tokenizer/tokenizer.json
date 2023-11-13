@@ -5,7 +5,7 @@
   "added_tokens": [
     {
       "id": 1,
-      "content": "<sos>",
+      "content": "<bos>",
       "single_word": false,
       "lstrip": false,
       "rstrip": false,
@@ -218,7 +218,7 @@
     "single": [
       {
         "SpecialToken": {
-          "id": "<sos>",
+          "id": "<bos>",
           "type_id": 0
         }
       },
@@ -250,6 +250,15 @@
       }
     ],
     "special_tokens": {
+      "<bos>": {
+        "id": "<bos>",
+        "ids": [
+          1
+        ],
+        "tokens": [
+          "<bos>"
+        ]
+      },
       "<eos>": {
         "id": "<eos>",
         "ids": [
@@ -257,15 +266,6 @@
         ],
         "tokens": [
           "<eos>"
-        ]
-      },
-      "<sos>": {
-        "id": "<sos>",
-        "ids": [
-          1
-        ],
-        "tokens": [
-          "<sos>"
         ]
       }
     }

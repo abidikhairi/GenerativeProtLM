@@ -1,4 +1,5 @@
 """Protein Sequences Datasets"""
+import pandas as pd
 from torch.utils.data import Dataset
 
 
@@ -12,7 +13,11 @@ class ProteinSequenceDataset(Dataset):
     Example:
     ```python
     dataset = ProteinSequenceDataset()
-    sample = dataset[0]
+    s1, s2 = dataset[0]
+    print(s1)
+    # prints: ACBQVTAAAV
+    print(s1)
+    # prints: CBQVTAAAVB
     ```
 
     Note:
@@ -28,11 +33,13 @@ class ProteinSequenceDataset(Dataset):
         No specific attributes are defined in this base implementation.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, seq_file: str, tokenizer) -> None:
         """
         Initializes a new instance of the ProteinSequenceDataset class.
         """
         super().__init__()
+        self.frame = pd.read_csv(seq_file, sep=";", header=None)
+        self.tokenizer = tokenizer
 
     def __len__(self):
         """
@@ -53,4 +60,17 @@ class ProteinSequenceDataset(Dataset):
         Returns:
             Any: The retrieved sample.
         """
-        return super().__getitem__(index)
+        sequence = list(self.frame.iloc[index, 0])
+        import pdb; pdb.set_trace()
+        sequence = [self.tokenizer.sos_token] + sequence + [self.tokenizer.eos_token]
+
+        return sequence
+
+
+if __name__ == '__main__':
+    from transformers import PreTrainedTokenizerFast
+    tokenizer = PreTrainedTokenizerFast.from_pretrained('/home/flursky/Work/rnd/phd/GenerativeProtLM/models/tokenizer')
+    seq_file = "/home/flursky/Work/rnd/phd/GenerativeProtLM/data/refseq_human_proteome_23_11_04_23_00_51.csv"
+    dataset = ProteinSequenceDataset(seq_file, tokenizer)
+
+    print(dataset[0])
