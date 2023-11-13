@@ -54,17 +54,20 @@ class GProtLM(pl.LightningModule):
             optimizer, lambda step: scheduler_fn(step, self.optim_conf.d_model, self.optim_conf.warmup))
         return [optimizer], [scheduler]
 
-    def forward(self, x):
+    def forward(self, x: th.Tensor, attn_mask: th.Tensor) -> Tuple[th.Tensor, th.Tensor]:
         """
         Forward pass of the GProtLM model.
 
         Args:
-            x (th.Tensor): Input tensor representing token indices.
+            x (th.Tensor): Input tensor representing token indices. Shape: (batch_size, sequence_length).
+            attn_mask (th.Tensor): Attention mask tensor to mask padded tokens. Shape: (batch_size, sequence_length).
 
         Returns:
             Tuple[th.Tensor, th.Tensor]: Output logits and hidden states.
+            - logits (th.Tensor): Predicted logits for each token. Shape: (batch_size, sequence_length, vocab_size).
+            - hidden_states (th.Tensor): Hidden states from the transformer model. Shape: (num_layers, batch_size, sequence_length, d_model).
         """
-        h = self.model(x)
+        h = self.model(x, attn_mask)
         z = self.head(h)
 
         return z, h
@@ -81,11 +84,15 @@ class GProtLM(pl.LightningModule):
             Optional[Union[th.Tensor, Tuple[th.Tensor, ...]]]: Training step output.
         """
 
-        x = batch['x']
-        y = batch['y']
+        input_ids = batch['input_ids']
+        attn_mask = batch['attention_mask'].bool()
+        labels = batch['labels']
 
-        z, _ = self(x)
-        loss = th.nn.functional.cross_entropy(z.view(-1), y.view(-1))
+        z, _ = self(input_ids, attn_mask)
+
+        import pdb; pdb.set_trace()
+
+        loss = th.nn.functional.cross_entropy(z.view(-1), labels.view(-1))
 
         return loss
 

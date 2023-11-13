@@ -5,19 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "MicroGPT",
+            "name": "Train GenProtLM",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/experim/micro_gpt.py",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "justMyCode": true
-        },
-        {
-            "name": "Training Script",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/code/main.py",
+            "program": "${workspaceFolder}/main.py",
+            "args": [
+                "--training-file",
+                "${workspaceFolder}/data/refseq_human_proteome_23_11_04_23_00_51.csv",
+                "--tokenizer-path",
+                "${workspaceFolder}/models/tokenizer",
+                "--model-checkpoint-path", 
+                "${workspaceFolder}/models/checkpoints"
+            ],
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "justMyCode": true
@@ -26,11 +25,20 @@
             "name": "Train Protein Tokenizer",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/code/scripts/train_tokenizer.py",
+            "program": "${workspaceFolder}/genprotlm/scripts/train_tokenizer.py",
             "args": [
                 "--save-path",
                 "${workspaceFolder}/models/tokenizer"
             ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "MicroGPT",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/experim/micro_gpt.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "justMyCode": true

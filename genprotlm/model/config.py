@@ -12,13 +12,11 @@ class DecoderLayerConfig(BaseModel):
     Attributes:
         d_model (int): The dimension of the model's hidden states (default is 1024).
         nhead (int): The number of attention heads in the layer (default is 8).
-        num_layers (int): The number of layers in the decoder (default is 4).
         dim_ff (int): The dimension of the feed-forward network (default is 2048).
         dropout (float): The dropout probability (default is 0.6).
     """
     d_model: int = 1024
     nhead: int = 8
-    num_layers: int = 4
     dim_ff: int = 2048
     dropout: float = 0.6
 

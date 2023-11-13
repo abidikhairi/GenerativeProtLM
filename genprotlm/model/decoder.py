@@ -5,7 +5,7 @@ import torch as th
 from torch import nn
 from xformers.components.positional_embedding import RotaryEmbedding
 
-from utils.cloning import clones
+from genprotlm.utils.cloning import clones
 
 from .config import DecoderConfig, DecoderLayerConfig
 
