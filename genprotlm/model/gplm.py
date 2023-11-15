@@ -120,5 +120,7 @@ class GProtLM(pl.LightningModule):
 
         loss = th.nn.functional.cross_entropy(z.view(-1, vocab_size), labels.view(-1), ignore_index=-100)
 
+        self.log('valid_loss', loss, prog_bar=True)
+
 
         return loss
