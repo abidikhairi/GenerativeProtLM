@@ -36,6 +36,8 @@ class GProtLM(pl.LightningModule):
         """
         super().__init__()
 
+        self.save_hyperparameters()
+
         self.model = TransformerDecoder(model_config)
         self.head = LinearLMHead(head_config)
 
@@ -83,6 +85,7 @@ class GProtLM(pl.LightningModule):
         Returns:
             Optional[Union[th.Tensor, Tuple[th.Tensor, ...]]]: Training step output.
         """
+        vocab_size = self.hparams.model_config.vocab_size
 
         input_ids = batch['input_ids']
         attn_mask = batch['attention_mask'].bool()
@@ -90,9 +93,7 @@ class GProtLM(pl.LightningModule):
 
         z, _ = self(input_ids, attn_mask)
 
-        import pdb; pdb.set_trace()
-
-        loss = th.nn.functional.cross_entropy(z.view(-1), labels.view(-1))
+        loss = th.nn.functional.cross_entropy(z.view(-1, vocab_size), labels.view(-1), ignore_index=-100)
 
         return loss
 
@@ -107,10 +108,14 @@ class GProtLM(pl.LightningModule):
         Returns:
             Optional[Union[th.Tensor, Tuple[th.Tensor, ...]]]: Validation step output.
         """
-        x = batch['x']
-        y = batch['y']
+        vocab_size = self.hparams.model_config.vocab_size
 
-        z, _ = self(x)
-        loss = th.nn.functional.cross_entropy(z.view(-1), y.view(-1))
+        input_ids = batch['input_ids']
+        attn_mask = batch['attention_mask'].bool()
+        labels = batch['labels']
+
+        z, _ = self(input_ids, attn_mask)
+
+        loss = th.nn.functional.cross_entropy(z.view(-1, vocab_size), labels.view(-1), ignore_index=-100)
 
         return loss
