@@ -66,13 +66,11 @@ class GProtLM(pl.LightningModule):
 
         Returns:
             Tuple[th.Tensor, th.Tensor]: Output logits and hidden states.
-            - logits (th.Tensor): Predicted logits for each token. Shape: (batch_size, sequence_length, vocab_size).
-            - hidden_states (th.Tensor): Hidden states from the transformer model. Shape: (num_layers, batch_size, sequence_length, d_model).
+            - hidden_states (th.Tensor): Hidden states from the transformer model. Shape: (batch_size, sequence_length, d_model).
         """
         h = self.model(x, attn_mask)
-        z = self.head(h)
 
-        return z, h
+        return h
 
     def training_step(self, batch, batch_idx) -> Optional[Union[th.Tensor, Tuple[th.Tensor, ...]]]:
         """
@@ -91,7 +89,8 @@ class GProtLM(pl.LightningModule):
         attn_mask = batch['attention_mask'].bool()
         labels = batch['labels']
 
-        z, _ = self(input_ids, attn_mask)
+        h = self(input_ids, attn_mask)
+        z = self.head(h)
 
         loss = th.nn.functional.cross_entropy(z.view(-1, vocab_size), labels.view(-1), ignore_index=-100)
 
