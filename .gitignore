@@ -1,5 +1,6 @@
 ### ML Project Files ###
 logs/
+lightning_logs/
 data/
 
 ## test code quickly
