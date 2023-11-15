@@ -115,8 +115,10 @@ class GProtLM(pl.LightningModule):
         attn_mask = batch['attention_mask'].bool()
         labels = batch['labels']
 
-        z, _ = self(input_ids, attn_mask)
+        h = self(input_ids, attn_mask)
+        z = self.head(h)
 
         loss = th.nn.functional.cross_entropy(z.view(-1, vocab_size), labels.view(-1), ignore_index=-100)
+
 
         return loss
